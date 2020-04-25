@@ -60,8 +60,10 @@ function returnFnResult(fn) {
    console.log(f()); // выведет 13
  */
 function returnCounter(number = 0) {
+    let num = number;
+
     return function sum () {
-        return ++number;
+        return ++num;
     };
 }
 
@@ -99,8 +101,10 @@ function returnArgumentsArray() {
 
    console.log(newSum()) выведет 6
  */
-function bindFunction(fn) {
-    return () => fn.apply(this, [...arguments].slice(1));
+function bindFunction(fn, ...args) {
+    return function () {
+        return fn.apply(this, args);
+    }
 }
 
 export {
