@@ -44,7 +44,7 @@ function sumWithDefaults(a, b=100) {
    returnFnResult(() => 'привет') вернет 'привет'
  */
 function returnFnResult(fn) {
-    return fn('hellow');
+    return fn();
 }
 
 /*
@@ -63,9 +63,7 @@ function returnFnResult(fn) {
 function returnCounter(number = 0) {
     let num = number;
 
-    return function next () {
-        return ++num;
-    };
+    return () => ++num;
 }
 
 /*
@@ -78,13 +76,8 @@ function returnCounter(number = 0) {
    returnArgumentsArray(1, 2, 3) вернет [1, 2, 3]
  */
 function returnArgumentsArray() {
-    var args = [];
 
-    for (var i=0; i< arguments.length; i++) {
-        args[i] = arguments[i];
-    }
-
-    return args;
+    return [...arguments];
 }
 
 /*
