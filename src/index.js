@@ -7,10 +7,9 @@
  Посмотрите как работает forEach и повторите это поведение для массива, который будет передан в параметре array
  */
 function forEach(array, fn) {
-    let arr = array;
 
-    for (var i=0; i<arr.length; i++) {
-        fn(arr[i], i, arr);
+    for (var i=0; i<array.length; i++) {
+        fn(array[i], i, array);
     }
 }
 
@@ -21,11 +20,10 @@ function forEach(array, fn) {
  Посмотрите как работает map и повторите это поведение для массива, который будет передан в параметре array
  */
 function map(array, fn) {
-    let arr = array;
     let newArr = [];
 
-    for (var i=0; i<arr.length; i++) {
-        newArr.push(fn(arr[i], i, arr));
+    for (var i=0; i<array.length; i++) {
+        newArr.push(fn(array[i], i, array));
     }
 
     return newArr;
@@ -39,8 +37,8 @@ function map(array, fn) {
  */
 function reduce(array, fn, initial) {
     let arr = array;
-    let n = initial === undefined ? 1 : 0;
-    let sumElem = initial === undefined ? array[0] : initial;
+    let n = initial ? 0 : 1;
+    let sumElem = initial ? initial : array[0];
 
     for (var i = n; i < arr.length; i++) {
         sumElem = fn(sumElem, arr[i], i, arr);
@@ -73,33 +71,20 @@ function upperProps(obj) {
  Напишите аналог встроенного метода slice для работы с массивами
  Посмотрите как работает slice и повторите это поведение для массива, который будет передан в параметре array
  */
-function slice(array, from, to) {
+function slice(array, from = 0, to = array.length) {
     let arr = [];
-    let f;
-    let t;
 
-    if (from === undefined || array.length + from < 0) {
-        f = 0;
-    } else if (from < 0 && Math.abs(from) < array.length) {
-        f = array.length - 1 + from;
-    } else if (from > array.length - 1) {
-        return arr;
-    } else {
-        f = from;
+    if (to < 0) {
+        to = array.length + to;
+    }
+    if (from < 0) {
+        from = array.length + from;
     }
 
-    if (to === undefined || to > array.length){
-        t = array.length;
-    } else if (to < 0 && Math.abs(to) < array.length) {
-        t = array.length + to;
-    } else if (to === 0 || array.length + to < 0){
-        return arr;
-    } else {
-        t = to;
-    }
-
-    for (let i=f; i<t; i++) {
-        arr.push(array[i]);
+    for (let i = from; i < to; i++) {
+        if (array[i]) {
+            arr.push(array[i])
+        }
     }
 
     return arr;
