@@ -25,7 +25,6 @@ function map(array, fn) {
     for (var i=0; i<array.length; i++) {
         newArr.push(fn(array[i], i, array));
     }
-
     return newArr;
 }
 
