@@ -17,7 +17,7 @@
    isAllTrue([100, 2, 3, 4, 5], n => n < 10) // вернет false
  */
 function isAllTrue(array, fn) {
-    if (!Array.isArray(array) || array.length === 0) {
+    if (!(typeof array === 'object' && toString.call(array) === '[object Array]') || array.length === 0) {
         throw new Error('empty array');
     }
 
@@ -27,7 +27,7 @@ function isAllTrue(array, fn) {
 
     let result = true;
 
-    for (const value of array) {
+    for (let value of array) {
 
         if (!fn(value)) {
             result = false;
@@ -55,7 +55,7 @@ function isAllTrue(array, fn) {
    isSomeTrue([1, 2, 3, 4, 5], n => n > 20) // вернет false
  */
 function isSomeTrue(array, fn) {
-    if (!Array.isArray(array) || array.length === 0) {
+    if (!(typeof array === 'object' && toString.call(array) === '[object Array]') || array.length === 0) {
         throw new Error('empty array');
     }
 
@@ -65,7 +65,7 @@ function isSomeTrue(array, fn) {
 
     let result = false;
 
-    for (const value of array) {
+    for (let value of array) {
 
         if (fn(value)) {
             result = true;
@@ -130,40 +130,17 @@ function calculator(number = 0) {
     }
 
     let obj = {
-        sum () {
-            let res = [...arguments].reduce((accumulator, currentValue) => {
-                return accumulator + currentValue;
-            }, number);
+        sum: (...args) => args.reduce((accumulator, currentValue) => accumulator + currentValue, number),
+        dif: (...args) => args.reduce((accumulator, currentValue) => accumulator - currentValue, number),
+        mul: (...args) => args.reduce((accumulator, currentValue) => accumulator * currentValue, number),
+        div: (...args) => args.reduce((accumulator, currentValue) => {
+            if (currentValue === 0) {
+                throw new Error('division by 0');
+            }
 
-            return res;
-        },
-        dif () {
-            let res = [...arguments].reduce((accumulator, currentValue) => {
-                return accumulator - currentValue;
-            }, number);
-
-            return res;
-        },
-        div () {
-            let res = [...arguments].reduce((accumulator, currentValue) => {
-                if (currentValue === 0) {
-                    throw new Error('division by 0');
-                }
-
-                return accumulator / currentValue;
-            }, number);
-
-            return res;
-        },
-        mul () {
-            let res = [...arguments].reduce((accumulator, currentValue) => {
-                return accumulator * currentValue;
-            }, number);
-
-            return res;
-        }
-
-    }
+            return accumulator / currentValue;
+        }, number)
+    };
 
     return obj;
 }
