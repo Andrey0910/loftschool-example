@@ -130,13 +130,16 @@ function deleteTextNodes(where) {
 function deleteTextNodesRecursive(where) {
     let nodes = where.childNodes;
 
-    Array.from(nodes).forEach(value => {
+    [...nodes].forEach(value => {
         if (value.nodeType === 3) {
             let parent = value.parentNode;
 
             parent.removeChild(value);
         }
-        deleteTextNodesRecursive(value);
+
+        if (value.nodeType === 1) {
+            deleteTextNodesRecursive(value);
+        }
     });
 }
 
@@ -170,8 +173,8 @@ function collectDOMStat(root) {
     let nodesRecursive = (where) => {
         let nodes = where.childNodes;
 
-        if (nodes.length > 0) {
-            Array.from(nodes).forEach(value => {
+        if (nodes.length) {
+            [...nodes].forEach(value => {
                 if (value.nodeType === 1) {
                     let valueTag = value.tagName;
                     let valueClass = value.classList;
@@ -244,7 +247,9 @@ function observeChildNodes(where, fn) {
                     operation.nodes.push(value);
                 }
 
-            } else if (Object.keys(mutation.removedNodes).length) {
+            }
+
+            if (Object.keys(mutation.removedNodes).length) {
                 operation.type = 'remove';
                 for (let value of mutation.removedNodes) {
                     operation.nodes.push(value);
