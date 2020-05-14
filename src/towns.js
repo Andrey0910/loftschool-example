@@ -81,7 +81,6 @@ filterInput.addEventListener('keyup', (e) => {
     try {
         loadingBlock.style.display = 'block';
         let res = JSON.parse(sessionStorage.getItem('towns'));
-
         filterResult.innerHTML = '';
         let filterTowns = [];
 
@@ -91,12 +90,7 @@ filterInput.addEventListener('keyup', (e) => {
             }
         }
 
-        for (let item of filterTowns) {
-            let span = document.createElement('span');
-            span.innerText = item.name;
-            filterResult.appendChild(span);
-        }
-
+        filterResult.appendChild(createNodeListTowns(filterTowns));
         loadingBlock.style.display = 'none';
 
         if (e.target.value === '') {
@@ -112,11 +106,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         let res = await loadTowns();
 
         if (res) {
-            for (let item of res) {
-                let span = document.createElement('span');
-                span.innerText = item.name;
-                filterResult.appendChild(span);
-            }
+            filterResult.appendChild(createNodeListTowns(res));
             loadingBlock.style.display = 'none';
             filterBlock.style.display = 'block';
         }
@@ -158,14 +148,10 @@ function reloadTowns() {
 
     button.addEventListener('click', async () => {
         try {
-            let res = await
-                loadTowns();
+            let res = await loadTowns();
+
             if (res) {
-                for (let item of res) {
-                    let span = document.createElement('span');
-                    span.innerText = item.name;
-                    filterResult.appendChild(span);
-                }
+                filterResult.appendChild(createNodeListTowns(res));
                 blockMessage.textContent = '';
                 loadingBlock.style.display = 'none';
                 filterBlock.style.display = 'block';
@@ -182,6 +168,18 @@ function reloadTowns() {
         }
     });
 }
+// Формирование списка городов
+let createNodeListTowns = (listTowns) => {
+    let fragment = document.createDocumentFragment();
+
+    for (let item of listTowns) {
+        let span = document.createElement('span');
+        span.innerText = item.name;
+        fragment.appendChild(span);
+    }
+
+    return fragment;
+};
 
 export {
     loadTowns,
