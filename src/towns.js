@@ -129,7 +129,7 @@ function reloadTowns() {
     const readyBlockMessage = document.querySelector('.blockMessage');
 
     if (readyBlockMessage) {
-        readyBlockMessage.parentNode.removeChild(readyBlockMessage);
+        readyBlockMessage.remove();
     }
     const button = document.createElement('button');
     const message = document.createElement('span');
